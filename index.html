@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f5f0">
+  <meta name="description" content="Your quiet corner for AWS Cloud Practitioner practice. 195 questions, thoughtful explanations, and a full-length exam simulator.">
+  <title>Cloudroom — AWS Cloud Practitioner practice</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="assets/question-bank.js"></script>
+  <script defer src="src/core.js"></script>
+  <script defer src="src/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#" data-action="home" aria-label="Cloudroom home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>cloudroom<span class="brand-dot">.</span></a>
+      <nav aria-label="Main navigation"><a href="#domains" data-action="domains">The exam</a><a href="#progress" data-action="progress">Your progress</a><button class="header-cta" data-action="setup">Let’s practice <span aria-hidden="true">↗</span></button></nav>
+    </div>
+  </header>
+  <main id="main" tabindex="-1"><div class="loading">Opening your study space…</div></main>
+  <footer class="site-footer"><span>A little practice, every day.</span><span>Independent study tool. Not affiliated with AWS.</span><a href="https://docs.aws.amazon.com/aws-certification/latest/cloud-practitioner-02/cloud-practitioner-02.html" target="_blank" rel="noopener noreferrer">Official exam guide ↗</a></footer>
+  <dialog id="setup-dialog" aria-labelledby="setup-title"></dialog>
+  <dialog id="confirm-dialog" aria-labelledby="confirm-title"></dialog>
+  <dialog id="map-dialog" aria-labelledby="map-title"></dialog>
+  <div id="announcement" class="sr-only" role="status" aria-live="polite"></div>
+  <div id="storage-warning" class="storage-warning" role="status" hidden>Browser storage is unavailable. Keep this tab open to retain your session.</div>
+  <noscript><div class="noscript">Cloudroom needs JavaScript to run the practice questions. Enable JavaScript and reload this page.</div></noscript>
+</body>
+</html>

@@ -1,0 +1,39 @@
+# macOS and editor-local files
+.DS_Store
+.AppleDouble/
+._*
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Dependencies and generated test output
+node_modules/
+/qa/
+/coverage/
+/playwright-report/
+/test-results/
+*.log
+
+# Local environment, credentials, and private keys
+.env
+.env.*
+!.env.example
+.aws/
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Local deployment-provider state
+.netlify/
+.vercel/
+.wrangler/
+
+# Original input PDFs are not required by the website
+AWS Certified Cloud Practitioner Slides*.pdf*
+AWS_CCP_Practice_Set_*.pdf
+
+# Keep assets/question-bank.json and assets/question-bank.js tracked.
+# The app and its tests require these public question/answer datasets.
