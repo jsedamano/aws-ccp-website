@@ -37,3 +37,7 @@ AWS_CCP_Practice_Set_*.pdf
 
 # Keep assets/question-bank.json and assets/question-bank.js tracked.
 # The app and its tests require these public question/answer datasets.
+
+# Static deployment output and local AWS tooling
+/dist/
+/.local-tools/
