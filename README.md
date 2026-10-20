@@ -1,87 +1,146 @@
 # Cloudroom
 
-A local AWS Certified Cloud Practitioner (CLF-C02) practice website. Built from your supplied 195-question bank, with all answer explanations preserved.
+A responsive study app for the **AWS Certified Cloud Practitioner (CLF-C02)** exam, featuring 195 practice questions across all four exam domains and explanations for every answer option.
 
-## Open the website
+Built with HTML, CSS, and JavaScript. The app runs entirely in the browser, with no backend, account system, or runtime dependencies.
 
-The simplest option is to open `index.html` in your browser. All application assets are local; no account, installation, build, or internet connection is needed to practice. Official reference links open AWS documentation when you choose them.
+## Features
 
-For the most consistent saved progress, use the local server:
+- Domain-specific practice and randomized mixed sessions.
+- Full-length exam simulations with 65 questions and a 90-minute timer.
+- Single-answer and multiple-answer questions with detailed feedback.
+- Question flags, navigation, and saved sessions that survive page refreshes.
+- Results by domain, answer review, and targeted retries for missed questions.
+- Responsive layouts for desktop, tablet, and mobile browsers.
+- Local progress tracking without uploading answers or results.
+
+## Practice modes
+
+| Mode | Question selection | Feedback |
+| --- | --- | --- |
+| **Focus on a domain** | Questions from one selected exam domain | After each submitted answer |
+| **Mix it up** | A randomized sample from the full bank | After each submitted answer |
+| **Simulate exam day** | Practice Set A, B, or C, or a fresh exam with approximate domain weighting | After the exam ends |
+
+Untimed sessions support 10, 20, 30, 50, or all available questions. Session lengths are capped at the number of questions available in the selected pool, with no duplicates within a session.
+
+In practice mode, single-answer questions reveal feedback immediately after selection. Multiple-answer questions require the specified number of selections followed by **Check answer**. Submitted practice answers are locked; exam answers remain editable until submission.
+
+Exam mode saves a fixed deadline. Refreshing or closing the page does not pause the clock. An open session submits automatically when time expires; a closed session that has expired submits when reopened. Timing relies on the device clock.
+
+## Getting started
+
+### Local server
+
+Requires **Node.js 20 or later**. No dependency installation or build step is needed.
 
 ```sh
+git clone https://github.com/jsedamano/aws-ccp-website.git
 cd aws-ccp-website
 npm start
 ```
 
-Open http://127.0.0.1:4173. Node.js 20 or later is needed for the server and tests. There are no npm dependencies to install. Stop the server with Control+C. For a different port: `node server.mjs --port 4174`.
+Open [http://127.0.0.1:4173](http://127.0.0.1:4173). Stop the server with `Ctrl+C`.
 
-## Practice on your phone
+To use a different port:
 
-The layout adapts to phones, tablets, and desktop browsers. To access the local site on your phone, start the server with:
+```sh
+node server.mjs --port 4174
+```
+
+### Direct browser access
+
+Open `index.html` directly in a browser. All assets are bundled locally, so practice works offline. Official documentation links require an internet connection.
+
+Using the local server provides a consistent origin for browser storage.
+
+### Access from another device
+
+To make the local server accessible on the same network:
 
 ```sh
 node server.mjs --host 0.0.0.0
 ```
 
-Connect the phone and Mac to the same Wi-Fi network, then open `http://YOUR_MAC_LOCAL_IP:4173` on the phone. Find the Mac’s local IP in System Settings → Wi-Fi → Details → TCP/IP. This serves the project on your local network; it does not publish anything to the cloud. Progress is stored separately in each browser and device.
+Connect both devices to the same network and open `http://<computer-local-ip>:4173` on the second device. Network or firewall settings may need to allow access to port 4173.
 
-## Modes
+## Static deployment
 
-- **Focus on a domain:** choose any of the four domains and a session length. If the requested length exceeds availability, the session includes all questions in that domain.
-- **Mix it up:** a shuffled sample from the entire question bank, with no duplicates within the session.
-- **Simulate exam day:** 65 questions and a 90-minute timer. Use Practice Set A, B, or C, or a fresh exam with approximate domain weighting (16 / 19 / 22 / 8). Each exam is shuffled.
+Deploy the following files and directories to a static hosting service, preserving their structure:
 
-Single-answer practice reveals feedback immediately. For multiple-answer practice, select the required number and choose **Check answer**. Feedback covers every option. Submitted practice answers are locked so you can review and learn; exam answers remain editable until submission.
+```text
+index.html
+styles.css
+assets/
+src/
+```
 
-Exam mode withholds correctness and explanations until the end. You can flag questions, jump between them, and submit early. The timer uses a saved deadline, so refreshing, leaving the page, or closing the browser does not pause it. An open page auto-submits at zero; an expired session is submitted when you return. The timer depends on the device clock. This is a study simulator, not a proctored exam.
+No build command or Node.js server is required in production. The included server is for local development. Tests, generated screenshots, and project documentation are not required for deployment.
+
+## Progress and privacy
+
+The app stores its current session and up to 50 completed sessions in browser `localStorage`. The overview displays the five most recent sessions and aggregate statistics for the saved history.
+
+Progress is specific to the browser and website origin; it does not sync across devices. A local file, a localhost address, and a deployed domain use separate storage contexts. Clearing site data removes saved progress. If storage is unavailable, the app displays a notice and retains the current session in memory while the page remains open.
+
+Question content, correct answers, and explanations are public browser assets. Exam mode delays feedback in the interface; it does not restrict access to the answer bank.
 
 ## Scoring
 
-Each question earns one point only for the exact correct set of options. There is no partial credit. Unanswered, partially selected, and unchecked practice questions earn zero. All questions in the session contribute to the denominator.
+Each question is worth one point. Multiple-answer questions require the exact set of correct options; there is no partial credit. Unanswered questions, incomplete selections, and unchecked practice answers receive zero points. Every question in a session contributes to the score.
 
-The simulator labels a result of **70% or higher as a practice pass**. This is a configurable study benchmark in `src/core.js`, not an official pass prediction. The real exam uses 50 scored and 15 unscored questions, and a scaled passing score of 700 on a 100–1,000 scale. Raw percentages cannot be converted to AWS scaled scores.
+Exam simulations use **70% as a practice-pass benchmark**, configured in [src/core.js](src/core.js). This is not an official AWS pass prediction. The actual exam includes 50 scored questions and 15 unscored questions, with a passing scaled score of 700 on a 100–1,000 scale. Raw practice percentages cannot be converted to AWS scaled scores.
 
-Official format and domain weights were checked against:
-- https://aws.amazon.com/certification/certified-cloud-practitioner/
-- https://docs.aws.amazon.com/aws-certification/latest/cloud-practitioner-02/cloud-practitioner-02.html
+## Development
 
-## Saved progress
+| Command | Purpose |
+| --- | --- |
+| `npm start` | Start the local server |
+| `npm test` | Run the quiz-engine and question-bank tests |
+| `npm run check` | Check application syntax and run the core tests |
 
-The current session and up to 50 completed sessions are stored in browser localStorage. No data is uploaded. Revisit recent results, review all/missed/flagged questions, or retry missed questions. The overview shows the five most recent sessions and totals for the saved history. Clearing browser storage removes saved progress. Private browsing and opening the website at a different URL can use separate storage. If storage is blocked, a message explains that the current tab must remain open.
+### Browser checks
 
-## Files
-
-- `index.html`, `styles.css`: responsive page shell and visual design.
-- `src/app.js`: screens, feedback, timer, local progress, and accessible dialogs.
-- `src/core.js`: selection, scoring, and session validation rules.
-- `assets/question-bank.json`: unchanged copy of the supplied source bank.
-- `assets/question-bank.js`: browser-ready copy of the bank, allowing direct file access.
-- `server.mjs`: optional dependency-free local server, loopback-only by default.
-- `tests/`: automated scoring and browser walkthrough checks.
-- `qa/`: generated browser-verification screenshots, recreated by the browser checks and excluded from Git.
-
-If you edit the bank, update both bank files. The JavaScript file contains `window.CCP_BANK = ` followed by the JSON and a semicolon. Changing `bank_version` invalidates incompatible saved sessions. The PDFs and course slides are not bundled or rehosted; the structured bank contains the questions and feedback used here.
-
-## Public repository notes
-
-The `.gitignore` excludes generated screenshots, logs, dependencies, local editor/deployment settings, environment files, private-key files, and the original input PDFs. Keep the application source, tests, README, package.json, and both question-bank files in the repository.
-
-The question bank includes the answers and explanations. They are public client-side assets, including during exam mode; hiding feedback in the interface is a study feature, not access control. Saved sessions and results live in each browser's localStorage and are not repository files.
-
-The original course slides and PDFs are not bundled. Only add third-party materials if you have permission to redistribute them. Review staged files before publishing. Ignore rules do not remove files that were already tracked or committed.
-
-## Verification
+The optional browser walkthrough requires Playwright and an installed Chrome binary. Start the local server, then run:
 
 ```sh
-npm run check
+node tests/browser-check.cjs
 ```
 
-This checks JavaScript syntax and runs the core tests. The optional browser walkthrough uses a local Playwright package and an installed Chrome binary:
+Optional environment variables:
 
-```sh
-PLAYWRIGHT_MODULE=/absolute/path/to/playwright CHROME_BIN='/path/to/Chrome' node tests/browser-check.cjs
+| Variable | Purpose |
+| --- | --- |
+| `PLAYWRIGHT_MODULE` | Path to a Playwright installation outside the project |
+| `CHROME_BIN` | Path to the Chrome executable; defaults to the standard macOS location |
+| `PREVIEW_URL` | Server address; defaults to `http://127.0.0.1:4173` |
+
+Browser checks use an isolated profile and create screenshots in `qa/`. Generated screenshots and test reports are excluded from Git.
+
+### Project structure
+
+```text
+assets/
+  favicon.svg
+  question-bank.json       # Structured question bank
+  question-bank.js         # Browser-ready question bank
+src/
+  app.js                   # Screens, interactions, timer, and persistence
+  core.js                  # Question selection, scoring, and session validation
+tests/
+  core.test.cjs            # Quiz-engine and data checks
+  browser-check.cjs        # Browser walkthrough and responsive-layout checks
+index.html                 # Application shell
+styles.css                 # Responsive styles
+server.mjs                 # Local static-file server
+package.json               # Development commands
 ```
 
-Run the local server first. Browser checks use an isolated profile and write screenshots to `qa/`; they do not use your personal browsing data.
+Keep both question-bank files synchronized when updating content. The JavaScript representation assigns the JSON data to `window.CCP_BANK`, which enables direct file access without fetching data from a server. Changing `bank_version` invalidates previously saved sessions associated with the old version.
 
-Independent study material; not affiliated with or endorsed by AWS.
+## Exam references
+
+- [AWS Certified Cloud Practitioner overview](https://aws.amazon.com/certification/certified-cloud-practitioner/)
+- [CLF-C02 exam guide](https://docs.aws.amazon.com/aws-certification/latest/cloud-practitioner-02/cloud-practitioner-02.html)
+
+Cloudroom is an independent study tool and is not affiliated with or endorsed by AWS. The practice questions are not official AWS exam questions.
